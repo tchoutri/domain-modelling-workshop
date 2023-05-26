@@ -1,0 +1,8 @@
+dist*
+.hie
+cabal.project.local*
+Session.vim
+<
+hie.yaml
+tags
+tags.mtime
