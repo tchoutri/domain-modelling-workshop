@@ -2,14 +2,14 @@ module Main where
 
 import Control.Monad.IO.Class
 import Data.Aeson hiding (json)
+import Data.Time qualified as Time
 import Network.HTTP.Types
 import Network.Wai.Handler.Warp (run)
 import Web.Twain
-import Data.Time qualified as Time
 
+import Price
 import Types
 import Validation
-import Price
 
 main :: IO ()
 main = do
@@ -39,7 +39,7 @@ handleCommand = do
         Just body -> do
           let price = computePrice body.history
           currentTime <- liftIO Time.getCurrentTime
-          let response = 
+          let response =
                 Event "1" currentTime (defaultPayload{cardId = "123", priceAmount = Just price, priceCurrency = Just EUR}) PriceWasCalculated
           liftIO $ print (encode response)
           send $ json $ response

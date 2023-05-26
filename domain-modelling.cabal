@@ -1,19 +1,11 @@
 cabal-version:   3.4
 name:            domain-modelling
 version:         0.1.0.0
-
--- synopsis:
--- description:
 license:         BSD-3-Clause
 license-file:    LICENSE
-
--- author:
--- maintainer:
--- copyright:
 build-type:      Simple
 extra-doc-files: CHANGELOG.md
-
--- extra-source-files:
+tested-with:     GHC ==9.4.5
 
 common warnings
   ghc-options:
@@ -78,9 +70,9 @@ executable domain-modelling
     , domain-modelling
     , http-types
     , text
+    , time
     , twain
     , warp
-    , time
 
   hs-source-dirs:   app
   default-language: GHC2021
