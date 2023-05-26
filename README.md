@@ -36,4 +36,10 @@ You will need to run following command line:
 $ cabal install cabal-fmt fourmolu hlint apply-refact
 ```
 
+## How to read
+
+* The web server and request handling happens in `./app/Main.hs`
+* Business logic like validation, price computation, and types happen in `./src`
+* The tests happen in `./test`
+
 Enjoy!
