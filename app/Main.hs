@@ -42,7 +42,7 @@ handleCommand = do
           let response =
                 Event "1" currentTime (defaultPayload{cardId = "123", priceAmount = Just price, priceCurrency = Just EUR}) PriceWasCalculated
           liftIO $ print (encode response)
-          send $ json $ response
+          send $ json response
 
 missing :: ResponderM a
 missing = send $ html "Not found..."

@@ -30,7 +30,8 @@ spec =
     , testGroup
         "Body"
         [ testCase "Body parsing" testParseBody
-        , testCase "Body validation" testBodyValidation
+        , testCase "Body validation succesful" testBodyValidation
+        , testCase "Body validation fails" testBodyValidationFailure
         ]
     , testGroup
         "History"
@@ -180,6 +181,23 @@ testBodyValidation = do
   assertBool
     "Body is validated"
     (isJust $ validate body)
+
+testBodyValidationFailure :: IO ()
+testBodyValidationFailure = do
+  let body =
+        Body
+          { command =
+              Command
+                { commandId = "9fa9f790-7035-4542-ac9f-24a28a857bbc"
+                , createdAt = read "2023-05-26 11:29:21.339243 UTC"
+                , payload = defaultPayload
+                , commandType = CalculatePrice
+                }
+          , history = []
+          }
+  assertBool
+    "Body is not validated"
+    (isNothing $ validate body)
 
 testPriceZero :: IO ()
 testPriceZero =
