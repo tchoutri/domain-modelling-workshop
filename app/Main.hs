@@ -7,16 +7,21 @@ import Network.HTTP.Types
 import Network.Wai.Handler.Warp (run)
 import Web.Twain
 
+import Network.Wai.Middleware.RequestLogger qualified as Logger
 import Price
 import Types
+import Types.Command
+import Types.Event
+import Types.EventType
+import Types.Payloads
 import Validation
 
 main :: IO ()
 main = do
   let port = 8081
   putStrLn $ "Starting server on http://localhost:" <> show port
-  run port $
-    foldr ($) (notFound missing) routes
+  let app = Logger.logStdoutDev $ foldr ($) (notFound missing) routes
+  run port app
 
 routes :: [Middleware]
 routes =
@@ -40,8 +45,12 @@ handleCommand = do
           let price = computePrice body.history
           currentTime <- liftIO Time.getCurrentTime
           let response =
-                Event "1" currentTime (defaultPayload{cardId = "123", priceAmount = Just price, priceCurrency = Just EUR}) PriceWasCalculated
-          liftIO $ print (encode response)
+                Event
+                  "1"
+                  currentTime
+                  (PriceCalculated $ PriceWasCalculatedPayload{cardId = body.command.cardId, priceAmount = price, priceCurrency = EUR})
+                  PriceWasCalculatedEvent
+          liftIO $ print (toJSON response)
           send $ json response
 
 missing :: ResponderM a

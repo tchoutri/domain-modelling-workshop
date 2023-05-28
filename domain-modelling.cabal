@@ -40,16 +40,23 @@ common common-extensions
 library
   import:           warnings
   import:           common-extensions
+
+  -- cabal-fmt: expand src/
   exposed-modules:
     Price
+    PricingState
     Types
+    Types.Command
+    Types.Event
+    Types.EventType
+    Types.Payloads
     Validation
 
   build-depends:
     , aeson
-    , base            ^>=4.17.0.0
-    , bytestring
+    , base            ^>=4.17.1.0
     , deriving-aeson
+    , effectful-core
     , text
     , time
     , twain
@@ -61,17 +68,15 @@ executable domain-modelling
   import:           warnings
   import:           common-extensions
   main-is:          Main.hs
-
-  -- other-modules:
-  -- other-extensions:
   build-depends:
     , aeson
-    , base              ^>=4.17.0.0
+    , base              ^>=4.17.1.0
     , domain-modelling
     , http-types
     , text
     , time
     , twain
+    , wai-extra
     , warp
 
   hs-source-dirs:   app
@@ -81,17 +86,20 @@ test-suite domain-modelling-test
   import:           warnings
   import:           common-extensions
   default-language: GHC2021
-
-  -- other-modules:
-  -- other-extensions:
   type:             exitcode-stdio-1.0
   hs-source-dirs:   test
+  other-modules:    Utils
   main-is:          Main.hs
   build-depends:
     , aeson
-    , base              ^>=4.17.0.0
+    , aeson-qq
+    , base              ^>=4.17.1.0
     , bytestring
     , domain-modelling
+    , hedgehog
+    , optics-core
+    , pretty-simple
     , tasty
     , tasty-hunit
     , text
+    , time
